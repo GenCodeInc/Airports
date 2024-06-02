@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Airports.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Airports.Pages"
+    Shell.FlyoutBehavior="Disabled">
+
+
+	<TabBar>
+		<Tab Title="MainPage" Icon="toolbar_storm.png">
+			<ShellContent
+            Title="Main Map"
+            ContentTemplate="{DataTemplate local:MainPage}"
+            Route="MainPage" />
+		</Tab>
+        <Tab Title="Settings" Icon="toolbar_settings.png">
+            <ShellContent 
+            Title="Settings"
+            ContentTemplate="{DataTemplate local:SettingsPage}"
+            Route="Settings" />
+        </Tab>
+    </TabBar>
+</Shell>

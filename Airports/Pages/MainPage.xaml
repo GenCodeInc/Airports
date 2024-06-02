@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Airports.Pages.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:Airports="clr-namespace:Airports"
+    xmlns:models="clr-namespace:Airports.Models"
+    xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps"
+    x:DataType="Airports:MainPageViewModel"
+    Shell.NavBarIsVisible="False">
+
+    <Grid>
+        <!-- Map in the background -->
+        <!--<maps:Map
+            IsShowingUser="true"
+            x:Name="MainMap"
+            MapType="Hybrid"    
+            ItemsSource="{Binding LocationPins}"
+            VerticalOptions="FillAndExpand">
+            <maps:Map.ItemTemplate>
+                <DataTemplate x:DataType="{x:Type models:LocationPin}">
+                    <Airports:CustomPin
+                        Location="{Binding Location}"
+                        Address="{Binding Address}"
+                        Label="{Binding Description}"
+                        ImageSource="{Binding ImageSource}"
+                        Type="Place"/>
+                </DataTemplate>
+            </maps:Map.ItemTemplate>
+        </maps:Map>-->
+
+        <!-- Floating buttons at the top center -->
+        <Grid VerticalOptions="Start" HorizontalOptions="FillAndExpand" Margin="0,20,0,0">
+            <BoxView Color="Transparent" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
+            <ScrollView Orientation="Horizontal"
+                BackgroundColor="Transparent"
+                HorizontalOptions="Center"
+                VerticalOptions="Center">
+                <HorizontalStackLayout Spacing="10" HorizontalOptions="Center" BackgroundColor="Transparent">
+                    <!--<Button
+                        TextColor="White"
+                        BackgroundColor="SlateGrey"
+                        Command="{Binding AddCommand}"
+                        Text="Open Storm">
+                        <Button.Shadow>
+                            <Shadow Brush="Black" Opacity="0.5" Offset="5,5" />
+                        </Button.Shadow>
+                    </Button>-->
+                    <Button
+                        TextColor="White"
+                        BackgroundColor="SlateGrey"
+                        Text="Open Storm"
+                                    Clicked="OnClickAirportButtonClicked"
+                        >
+                        <Button.Shadow>
+                            <Shadow Brush="Black" Opacity="0.5" Offset="5,5" />
+                        </Button.Shadow>
+                    </Button>
+
+                    <Button
+                        TextColor="White"
+                        BackgroundColor="SlateGrey"
+                        Command="{Binding RemoveCommand}"
+                        Text="Remove All Storms">
+                        <Button.Shadow>
+                            <Shadow Brush="Black" Opacity="0.5" Offset="5,5" />
+                        </Button.Shadow>
+                    </Button>
+                </HorizontalStackLayout>
+            </ScrollView>
+        </Grid>
+
+        <!-- Logger -->
+        <Frame x:Name="LogFrame" VerticalOptions="End" Padding="0" 
+               Margin="0,140" Opacity="0.90" CornerRadius="10" 
+               BackgroundColor="Black"
+               HeightRequest="200" IsVisible="False"
+               InputTransparent="True">
+            <Frame.Background>
+                <LinearGradientBrush EndPoint="1,1">
+                    <GradientStop Color="Gray" Offset="0.0" />
+                    <GradientStop Color="DarkSlateGray" Offset="1.0" />
+                </LinearGradientBrush>
+            </Frame.Background>
+            <ScrollView
+                x:Name="MapLoggingView"
+                Orientation="Vertical"
+                BackgroundColor="Red"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand">
+                <StackLayout x:Name="LogStackLayout" />
+            </ScrollView>
+        </Frame>
+
+        <!-- Status bar at the bottom -->
+        <Frame VerticalOptions="End" Padding="0" Margin="4,0,4,5" Opacity="0.90" CornerRadius="10" BackgroundColor="Transparent"
+               InputTransparent="True">
+            <Frame.Background>
+                <LinearGradientBrush EndPoint="1,1">
+                    <GradientStop Color="Gray" Offset="0.0" />
+                    <GradientStop Color="DarkSlateGray" Offset="1.0" />
+                </LinearGradientBrush>
+            </Frame.Background>
+            <Grid VerticalOptions="End" BackgroundColor="SlateGrey" Padding="10" Margin="0" Opacity="0.95">
+                <Grid.Background>
+                    <LinearGradientBrush EndPoint="1,1">
+                        <GradientStop Color="Gray" Offset="0.0" />
+                        <GradientStop Color="DarkSlateGray" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Grid.Background>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Storm Name label -->
+                <HorizontalStackLayout Grid.Row="0" Grid.ColumnSpan="2" HorizontalOptions="Center" Padding="0,5,0,10">
+                    <Label Text="Airport Name: " TextColor="White" FontSize="Medium" FontAttributes="Bold" />
+                    <Label x:Name="AirportNameLabel" Text="-" TextColor="White" FontSize="Medium" FontAttributes="Bold" />
+                </HorizontalStackLayout>
+
+                <!-- Wind Speed and Direction labels and values -->
+                <HorizontalStackLayout Grid.Row="1" Grid.Column="0" HorizontalOptions="Center">
+                    <Label Text="City: " TextColor="White" FontSize="Small" FontAttributes="Bold" />
+                    <Label x:Name="CityLabel" Text="-" TextColor="White" FontSize="Small" FontAttributes="Bold" />
+                </HorizontalStackLayout>
+                <HorizontalStackLayout Grid.Row="1" Grid.Column="1" HorizontalOptions="Center">
+                    <Label Text="IATACode: " TextColor="White" FontSize="Small" FontAttributes="Bold" />
+                    <Label x:Name="IATACodeLabel" Text="-" TextColor="White" FontSize="Small" FontAttributes="Bold" />
+                </HorizontalStackLayout>
+
+                <!-- Pressure and Distance labels and values -->
+                <HorizontalStackLayout Grid.Row="2" Grid.Column="0" HorizontalOptions="Center">
+                    <Label Text="State: " TextColor="White" FontSize="Small" FontAttributes="Bold" />
+                    <Label x:Name="StateLabel" Text="-" TextColor="White" FontSize="Small" FontAttributes="Bold" />
+                </HorizontalStackLayout>
+                <HorizontalStackLayout Grid.Row="2" Grid.Column="1" HorizontalOptions="Center" Padding="0,3">
+                    <Label Text="Distance: " TextColor="White" FontSize="Small" FontAttributes="Bold" />
+                    <Label x:Name="DistanceLabel" Text="-" TextColor="White" FontSize="Small" FontAttributes="Bold" />
+                </HorizontalStackLayout>
+            </Grid>
+        </Frame>
+    </Grid>
+
+</ContentPage>

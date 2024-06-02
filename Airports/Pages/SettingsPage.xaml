@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Airports.Pages.SettingsPage"
+             Title="SettingsPage"
+             Shell.NavBarIsVisible="False"
+             >
+    <VerticalStackLayout Padding="10">
+        <Label 
+            Text="Map Settings"
+            FontSize="24"
+            HorizontalOptions="Center"
+            Margin="0,20,0,20" />
+
+        <Label Text="Map Type:" />
+        <Picker x:Name="MapTypePicker">
+            <Picker.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>Satellite</x:String>
+                    <x:String>Street</x:String>
+                    <x:String>Hybrid</x:String>
+                </x:Array>
+            </Picker.ItemsSource>
+        </Picker>
+
+        <Label Text="Speed Units:" Margin="0,20,0,0" />
+        <Picker x:Name="SpeedUnitsPicker">
+            <Picker.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>mph</x:String>
+                    <x:String>km/h</x:String>
+                    <x:String>knots</x:String>
+                </x:Array>
+            </Picker.ItemsSource>
+        </Picker>
+
+        <Label Text="Pressure Units:" Margin="0,20,0,0" />
+        <Picker x:Name="PressureUnitsPicker">
+            <Picker.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>Millibar (mb)</x:String>
+                    <x:String>Hectopascal (hPa)</x:String>
+                    <x:String>Inches of Mercury (inHg)</x:String>
+                </x:Array>
+            </Picker.ItemsSource>
+        </Picker>
+    </VerticalStackLayout>
+</ContentPage>
