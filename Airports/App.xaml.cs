@@ -30,7 +30,6 @@ public partial class App : Application
         window.Activated += (s, e) =>
         {
             CommonData.Logging.Write("-----------------> Activated");
-            CommonData.Logging.Write("-----------------> Calling LoadStormsOnMap from Activated");
 
             OnAppActivated(EventArgs.Empty);
         };

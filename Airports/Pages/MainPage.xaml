@@ -10,25 +10,6 @@
     Shell.NavBarIsVisible="False">
 
     <Grid>
-        <!-- Map in the background -->
-        <!--<maps:Map
-            IsShowingUser="true"
-            x:Name="MainMap"
-            MapType="Hybrid"    
-            ItemsSource="{Binding LocationPins}"
-            VerticalOptions="FillAndExpand">
-            <maps:Map.ItemTemplate>
-                <DataTemplate x:DataType="{x:Type models:LocationPin}">
-                    <Airports:CustomPin
-                        Location="{Binding Location}"
-                        Address="{Binding Address}"
-                        Label="{Binding Description}"
-                        ImageSource="{Binding ImageSource}"
-                        Type="Place"/>
-                </DataTemplate>
-            </maps:Map.ItemTemplate>
-        </maps:Map>-->
-
         <!-- Floating buttons at the top center -->
         <Grid VerticalOptions="Start" HorizontalOptions="FillAndExpand" Margin="0,20,0,0">
             <BoxView Color="Transparent" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
@@ -37,31 +18,10 @@
                 HorizontalOptions="Center"
                 VerticalOptions="Center">
                 <HorizontalStackLayout Spacing="10" HorizontalOptions="Center" BackgroundColor="Transparent">
-                    <!--<Button
-                        TextColor="White"
-                        BackgroundColor="SlateGrey"
-                        Command="{Binding AddCommand}"
-                        Text="Open Storm">
-                        <Button.Shadow>
-                            <Shadow Brush="Black" Opacity="0.5" Offset="5,5" />
-                        </Button.Shadow>
-                    </Button>-->
                     <Button
                         TextColor="White"
                         BackgroundColor="SlateGrey"
-                        Text="Open Storm"
-                                    Clicked="OnClickAirportButtonClicked"
-                        >
-                        <Button.Shadow>
-                            <Shadow Brush="Black" Opacity="0.5" Offset="5,5" />
-                        </Button.Shadow>
-                    </Button>
-
-                    <Button
-                        TextColor="White"
-                        BackgroundColor="SlateGrey"
-                        Command="{Binding RemoveCommand}"
-                        Text="Remove All Storms">
+                        Text="Goto Miami" Clicked="OnClickAirportButtonClicked">
                         <Button.Shadow>
                             <Shadow Brush="Black" Opacity="0.5" Offset="5,5" />
                         </Button.Shadow>
@@ -118,7 +78,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <!-- Storm Name label -->
+                <!-- Name label -->
                 <HorizontalStackLayout Grid.Row="0" Grid.ColumnSpan="2" HorizontalOptions="Center" Padding="0,5,0,10">
                     <Label Text="Airport Name: " TextColor="White" FontSize="Medium" FontAttributes="Bold" />
                     <Label x:Name="AirportNameLabel" Text="-" TextColor="White" FontSize="Medium" FontAttributes="Bold" />

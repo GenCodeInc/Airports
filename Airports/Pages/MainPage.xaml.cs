@@ -201,7 +201,7 @@ public partial class MainPage : ContentPage
     }
 
     /// <summary>
-    /// Updates the status bar with storm information.
+    /// Updates the status bar with information.
     /// </summary>
     public void UpdateStatusBar(string title = "", string city = "", string iATACodeLabel = "", string state = "", string distance = "")
     {
@@ -221,15 +221,15 @@ public partial class MainPage : ContentPage
         {
             try
             {
-                double stormMinLat = airports.Min(c => c.Latitude);
-                double stormMaxLat = airports.Max(c => c.Latitude);
-                double stormMinLon = airports.Min(c => c.Longitude);
-                double stormMaxLon = airports.Max(c => c.Longitude);
+                double airportMinLat = airports.Min(c => c.Latitude);
+                double airportMaxLat = airports.Max(c => c.Latitude);
+                double airportMinLon = airports.Min(c => c.Longitude);
+                double airportMaxLon = airports.Max(c => c.Longitude);
 
-                double centerLat = (stormMinLat + stormMaxLat) / 2;
-                double centerLon = (stormMinLon + stormMaxLon) / 2;
-                double distanceLat = stormMaxLat - stormMinLat;
-                double distanceLon = stormMaxLon - stormMinLon;
+                double centerLat = (airportMinLat + airportMaxLat) / 2;
+                double centerLon = (airportMinLon + airportMaxLon) / 2;
+                double distanceLat = airportMaxLat - airportMinLat;
+                double distanceLon = airportMaxLon - airportMinLon;
 
                 // Add padding around the edges
                 double paddingFactor = 1.2;
@@ -248,7 +248,7 @@ public partial class MainPage : ContentPage
         }
     }
     /// <summary>
-    /// Adds a pin for the storm on the map.
+    /// Adds a pin for the on the map.
     /// </summary>
     private async Task AddAirportPinAsync(Airport airport, string label = "")
     {
@@ -256,8 +256,8 @@ public partial class MainPage : ContentPage
         {
             CommonData.Logging.Write("AddAirportPinAsync");
 
-            var stormIcon = "Airports.Resources.EmbeddedImages.airport.png";
-            var stormLocation = new Location(airport.Latitude, airport.Longitude);
+            var airportIcon = "Airports.Resources.EmbeddedImages.airport.png";
+            var airportLocation = new Location(airport.Latitude, airport.Longitude);
 
             var pin = new CustomPin
             {
@@ -273,9 +273,9 @@ public partial class MainPage : ContentPage
                 Label = airport.AirportName + " (" + airport.City + " " + airport.State + ")",
 
                 Location = new Location(airport.Latitude, airport.Longitude),
-                Address = "Lat: " + stormLocation.Latitude.ToString("F1") +
-                          " Lon: " + stormLocation.Longitude.ToString("F1"),
-                ImageSource = ImageSource.FromResource(stormIcon)
+                Address = "Lat: " + airportLocation.Latitude.ToString("F1") +
+                          " Lon: " + airportLocation.Longitude.ToString("F1"),
+                ImageSource = ImageSource.FromResource(airportIcon)
             };
 
             pin.MarkerClicked += Pin_MarkerClicked1;
@@ -302,6 +302,19 @@ public partial class MainPage : ContentPage
         var pin = (CustomPin)sender;
         pin.ShowInfoWindow = true;
 
+        // Constants
+        const double milesToLatitudeDegrees = 69.0;
+        const double milesToLongitudeDegrees = 69.0;
+
+        // Calculate the spans
+        double spanLat = 10 / milesToLatitudeDegrees;
+        double spanLon = 10 / (milesToLongitudeDegrees * Math.Cos(pin.Location.Latitude * Math.PI / 180));
+
+        // Create the MapSpan
+        var mapSpan = new MapSpan(new Location(pin.Location.Latitude, pin.Location.Longitude), spanLat, spanLon);
+        MainMap.MoveToRegion(mapSpan);
+
+
         UpdateStatusBar(pin.MainPageStatusBar.AirportName,
                         pin.MainPageStatusBar.City,
                         pin.MainPageStatusBar.IATACode,
@@ -310,7 +323,7 @@ public partial class MainPage : ContentPage
     }
 
     /// <summary>
-    /// Calculates and displays the distance from the user's location to the storm location.
+    /// Calculates and displays the distance from the user's location to the location.
     /// </summary>
     public async Task<string> CalculateAndDisplayDistance(Location location)
     {
@@ -318,9 +331,9 @@ public partial class MainPage : ContentPage
     }
 
     /// <summary>
-    /// Calculates the distance from a fixed point (user's location) to the storm location.
+    /// Calculates the distance from a fixed point (user's location) to the location.
     /// </summary>
-    public async Task<string> GetDistanceFromFixedPoint(Location stormLocation)
+    public async Task<string> GetDistanceFromFixedPoint(Location airportLocation)
     {
         try
         {
@@ -335,7 +348,7 @@ public partial class MainPage : ContentPage
                 }
             }
 
-            double distance = Location.CalculateDistance(stormLocation, userLocation, DistanceUnits.Miles);
+            double distance = Location.CalculateDistance(airportLocation, userLocation, DistanceUnits.Miles);
             return $"{distance:F2} miles away.";
         }
         catch (Exception ex)

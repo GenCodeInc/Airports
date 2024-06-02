@@ -79,9 +79,7 @@
       <None Remove="Platforms\Android\Resources\xml\network_security_config.xml" />
       <None Remove="Resources\airports.csv" />
       <None Remove="Resources\airports_large_usa.csv" />
-      <None Remove="Resources\Images\storm.png" />
       <None Remove="Resources\Images\toolbar_settings.png" />
-      <None Remove="Resources\Images\toolbar_storm.png" />
     </ItemGroup>
 
     <ItemGroup>
@@ -90,9 +88,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <MauiImage Include="Resources\Images\storm.png" />
       <MauiImage Include="Resources\Images\toolbar_settings.png" />
-      <MauiImage Include="Resources\Images\toolbar_storm.png" />
     </ItemGroup>
 
 	<ItemGroup>

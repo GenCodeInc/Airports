@@ -8,7 +8,7 @@
 	<Grid VerticalOptions="Center" HorizontalOptions="Center">
 		<StackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="20">
 			<ActivityIndicator IsRunning="True" Color="#FFEB3B" WidthRequest="50" HeightRequest="50"/>
-			<Label Text="Loading Storm Data, Please Wait" 
+			<Label Text="Loading Data, Please Wait" 
                    HorizontalOptions="Center" 
                    VerticalOptions="Center" 
                    FontSize="20" 

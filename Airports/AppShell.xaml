@@ -8,7 +8,7 @@
 
 
 	<TabBar>
-		<Tab Title="MainPage" Icon="toolbar_storm.png">
+        <Tab Title="MainPage" Icon="toolbar_settings.png">
 			<ShellContent
             Title="Main Map"
             ContentTemplate="{DataTemplate local:MainPage}"
