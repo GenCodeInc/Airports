@@ -14,46 +14,6 @@ public partial class MainPage : ContentPage
     private string _distance = "-";
     private AirportService? airportService = null;
 
-    public string WindSpeed
-    {
-        get => _windSpeed;
-        set
-        {
-            _windSpeed = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public string Direction
-    {
-        get => _direction;
-        set
-        {
-            _direction = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public string Pressure
-    {
-        get => _pressure;
-        set
-        {
-            _pressure = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public string Distance
-    {
-        get => _distance;
-        set
-        {
-            _distance = value;
-            OnPropertyChanged();
-        }
-    }
-
     Location? userLocation = null;
 
     public MainPage(MainPageViewModel viewModel)
@@ -67,7 +27,6 @@ public partial class MainPage : ContentPage
         CommonData.Logging.LoggingEvent += OnLoggingEvent;
 
         CommonData.Logging.Write("MainPage Constructor Called", System.Diagnostics.TraceLevel.Verbose);
-        var customMapHandler = new CustomMapHandler();
     }
 
     /// <summary>
@@ -87,8 +46,20 @@ public partial class MainPage : ContentPage
             {
                 if (pin.Label.Contains("Miami"))
                 {
+                    // Sends event...event fires fine...but the InfoWindow doesn't popup.
                     ((CustomPin)pin).SendMarkerClick();
-                    
+
+                    // Constants
+                    const double milesToLatitudeDegrees = 69.0;
+                    const double milesToLongitudeDegrees = 69.0;
+
+                    // Calculate the spans
+                    double spanLat = 10 / milesToLatitudeDegrees;
+                    double spanLon = 10 / (milesToLongitudeDegrees * Math.Cos(pin.Location.Latitude * Math.PI / 180));
+
+                    // Create the MapSpan
+                    var mapSpan = new MapSpan(new Location(pin.Location.Latitude, pin.Location.Longitude), spanLat, spanLon);
+                    MainMap.MoveToRegion(mapSpan);
                     break;
                 }
             }
@@ -125,34 +96,34 @@ public partial class MainPage : ContentPage
     }
 
 
-    private Map MainMap;
+    //private Map MainMap;
 
     private void InitializeMap()
     {
-        MainMap = new Map
-        {
-            IsShowingUser = true,
-            MapType = MapType.Hybrid,
-            VerticalOptions = LayoutOptions.FillAndExpand,
-            ItemsSource = (BindingContext as MainPageViewModel)?.LocationPins
-        };
+        //MainMap = new Map
+        //{
+        //    IsShowingUser = true,
+        //    MapType = MapType.Hybrid,
+        //    VerticalOptions = LayoutOptions.FillAndExpand,
+        //    ItemsSource = (BindingContext as MainPageViewModel)?.LocationPins
+        //};
 
-        MainMap.ItemTemplate = new DataTemplate(() =>
-        {
-            var customPin = new CustomPin();
-            customPin.ShowInfoWindow = true;
-            customPin.SetBinding(CustomPin.LocationProperty, "Location");
-            customPin.SetBinding(CustomPin.AddressProperty, "Address");
-            customPin.SetBinding(CustomPin.LabelProperty, "Description");
-            customPin.SetBinding(CustomPin.ImageSourceProperty, "ImageSource");
-            return customPin;
-        });
+        //MainMap.ItemTemplate = new DataTemplate(() =>
+        //{
+        //    var customPin = new CustomPin();
+        //    customPin.ShowInfoWindow = true;
+        //    customPin.SetBinding(CustomPin.LocationProperty, "Location");
+        //    customPin.SetBinding(CustomPin.AddressProperty, "Address");
+        //    customPin.SetBinding(CustomPin.LabelProperty, "Description");
+        //    customPin.SetBinding(CustomPin.ImageSourceProperty, "ImageSource");
+        //    return customPin;
+        //});
 
-        // Add the map to the grid
-        if (Content is Grid grid)
-        {
-            grid.Children.Insert(0, MainMap); // Insert the map at the first position
-        }
+        //// Add the map to the grid
+        //if (Content is Grid grid)
+        //{
+        //    grid.Children.Insert(0, MainMap); // Insert the map at the first position
+        //}
     }
 
     /// <summary>
@@ -259,10 +230,8 @@ public partial class MainPage : ContentPage
             var airportIcon = "Airports.Resources.EmbeddedImages.airport.png";
             var airportLocation = new Location(airport.Latitude, airport.Longitude);
 
-            var pin = new CustomPin
+            CustomPin pin = new CustomPin
             {
-                ShowInfoWindow = true,
-
                 MainPageStatusBar = new MainPageStatusBar
                 {
                     AirportName = airport.AirportName,
@@ -273,12 +242,12 @@ public partial class MainPage : ContentPage
                 Label = airport.AirportName + " (" + airport.City + " " + airport.State + ")",
 
                 Location = new Location(airport.Latitude, airport.Longitude),
-                Address = "Lat: " + airportLocation.Latitude.ToString("F1") +
-                          " Lon: " + airportLocation.Longitude.ToString("F1"),
+                Address = "Lat: " + airportLocation.Latitude.ToString("F2") +
+                          " Lon: " + airportLocation.Longitude.ToString("F2"),
                 ImageSource = ImageSource.FromResource(airportIcon)
             };
 
-            pin.MarkerClicked += Pin_MarkerClicked1;
+            pin.MarkerClicked += Pin_MarkerClicked;
             pin.InfoWindowClicked += Pin_InfoWindowClicked;
             MainMap.Pins.Add(pin);
 
@@ -294,25 +263,11 @@ public partial class MainPage : ContentPage
         CommonData.Logging.Write("Pin_InfoWindowClicked");
     }
 
-    private void Pin_MarkerClicked1(object? sender, EventArgs e)
+    private void Pin_MarkerClicked(object? sender, EventArgs e)
     {
-
-        CommonData.Logging.Write("Pin_MarkerClicked");
+    CommonData.Logging.Write("Pin_MarkerClicked");
 
         var pin = (CustomPin)sender;
-        pin.ShowInfoWindow = true;
-
-        // Constants
-        const double milesToLatitudeDegrees = 69.0;
-        const double milesToLongitudeDegrees = 69.0;
-
-        // Calculate the spans
-        double spanLat = 10 / milesToLatitudeDegrees;
-        double spanLon = 10 / (milesToLongitudeDegrees * Math.Cos(pin.Location.Latitude * Math.PI / 180));
-
-        // Create the MapSpan
-        var mapSpan = new MapSpan(new Location(pin.Location.Latitude, pin.Location.Longitude), spanLat, spanLon);
-        MainMap.MoveToRegion(mapSpan);
 
 
         UpdateStatusBar(pin.MainPageStatusBar.AirportName,

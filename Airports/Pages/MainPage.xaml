@@ -5,11 +5,29 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:Airports="clr-namespace:Airports"
     xmlns:models="clr-namespace:Airports.Models"
-    xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps"
+    xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps"
     x:DataType="Airports:MainPageViewModel"
     Shell.NavBarIsVisible="False">
 
     <Grid>
+        <!-- Map in the background -->
+        <maps:Map
+            IsShowingUser="true"
+            x:Name="MainMap"
+            MapType="Hybrid"    
+            ItemsSource="{Binding LocationPins}"
+            VerticalOptions="FillAndExpand">
+            <maps:Map.ItemTemplate>
+                <DataTemplate x:DataType="{x:Type models:LocationPin}">
+                    <Airports:CustomPin
+                        Location="{Binding Location}"
+                        Address="{Binding Address}"
+                        Label="{Binding Description}"
+                        ImageSource="{Binding ImageSource}"
+                        Type="Place"/>
+                </DataTemplate>
+            </maps:Map.ItemTemplate>
+        </maps:Map>
         <!-- Floating buttons at the top center -->
         <Grid VerticalOptions="Start" HorizontalOptions="FillAndExpand" Margin="0,20,0,0">
             <BoxView Color="Transparent" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
